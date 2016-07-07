@@ -18,14 +18,15 @@ public class Solution {
         }
         if(q == null){
             return rotateRight(head, k%step);
+        }else{
+            while(q.next!=null){
+                p=p.next;
+                q=q.next;
+            }
+            q.next=head;
+            head=p.next;
+            p.next=null;
         }
-        while(p != null && p.next != null) {
-            p = p.next;
-            q = q.next;
-        }
-        p.next = head;
-        head = q.next;
-        q.next = null;
         return head;
     }
 }
