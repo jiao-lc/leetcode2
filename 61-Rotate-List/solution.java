@@ -8,11 +8,16 @@
  */
 public class Solution {
     public ListNode rotateRight(ListNode head, int k) {
-        if(head == null || head.next == null)   return head;
+        if(head == null || head.next == null || k == 0)   return head;
         ListNode p = head, q = head;
-        while(k > 0) {
-            p = p.next; k--;
-            if(p == null)   p = head;
+        
+        int step=0;
+        while(step < k && q != null){
+            q = q.next;
+            step++;
+        }
+        if(q == null){
+            return rotateRight(head, k%step);
         }
         while(p != null && p.next != null) {
             p = p.next;
