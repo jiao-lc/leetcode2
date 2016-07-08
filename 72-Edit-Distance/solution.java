@@ -10,7 +10,7 @@ public class Solution {
         }
         for(int i = 1; i <= len1; i++) {
             for(int j = 1; j <= len2; j++) {
-                if(word1.charAt(i) == word2.charAt(j))  dist[i][j] = dist[i - 1][j - 1];
+                if(word1.charAt(i - 1) == word2.charAt(j - 1))  dist[i][j] = dist[i - 1][j - 1];
                 else {
                     dist[i][j] = 1 + Math.min(dist[i - 1][j - 1], Math.min(dist[i][j - 1], dist[i - 1][j]));
                 }
