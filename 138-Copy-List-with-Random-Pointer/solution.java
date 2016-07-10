@@ -13,13 +13,15 @@ public class Solution {
         while(head != null) {
             RandomListNode node = new RandomListNode(head.label);
             map.put(head, node);
+            head = head.next;
         }
         head = res;
         while(head != null) {
             RandomListNode node = map.get(head);
             if(head.random != null) node.random = map.get(head.random);
             if(head.next != null) node.next = map.get(head.next);
+            head = head.next;
         }
-        return res;
+        return map.get(res);
     }
 }
