@@ -9,21 +9,22 @@
 public class Solution {
     public void connect(TreeLinkNode root) {
         if(root == null)    return;
-        Queue<TreeLinkNode> queue = new LinkedList<TreeLinkNode>();
-        queue.add(root);
-        while(!queue.isEmpty()) {
-            Queue<TreeLinkNode> tmp = new LinkedList<TreeLinkNode>();
-            TreeLinkNode prev = null;
-            while(!queue.isEmpty()) {
-                TreeLinkNode node = queue.poll();
-                if(prev != null) {
-                    prev.next = node;
+        TreeLinkNode dummy = new TreeLinkNode(0);
+        TreeLinkNode head = dummy;
+        while(root != null) {
+            while(root != null) {
+                if(root.left != null) {
+                    head.next = root.left;
+                    head = head.next;
                 }
-                if(node.left != null)   tmp.add(node.left);
-                if(node.right != null)  tmp.add(node.right);
-                prev = node;
+                if(root.right != null) {
+                    head.next = root.right;
+                    head = head.next;
+                }
+                root = root.next;
             }
-            queue = tmp;
+            root = dummy.next;
+            head = dummy;
         }
     }
 }
