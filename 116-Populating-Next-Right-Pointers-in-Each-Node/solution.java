@@ -25,6 +25,7 @@ public class Solution {
             }
             root = dummy.next;
             head = dummy;
+            head.next = null;
         }
     }
 }
