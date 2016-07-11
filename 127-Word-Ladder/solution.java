@@ -1,5 +1,4 @@
 public class Solution {
-    int d;
     public int ladderLength(String beginWord, String endWord, Set<String> wordList) {
         int[] step = new int[1];
         Set<String> used = new HashSet<String>();
@@ -17,10 +16,11 @@ public class Solution {
             if(oneDiff(word, cur)) {
                 used.add(cur);
                 step = helper(word, end, wordList, used, step + 1);
+                if(step != 0)   return step;
                 used.remove(cur);
             }
         }
-        return step;
+        return 0;
     }
     
     public boolean oneDiff(String w1, String w2) {
