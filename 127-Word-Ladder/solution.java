@@ -1,12 +1,14 @@
 public class Solution {
+    int d;
     public int ladderLength(String beginWord, String endWord, Set<String> wordList) {
         int[] step = new int[1];
         Set<String> used = new HashSet<String>();
         helper(beginWord, endWord, wordList, used, step);
-        return step[0];
+        return d;
     }
     public void helper(String cur, String end, Set<String> wordList, Set<String> used, int[] step) {
         if(cur.equals(end)) {
+            d = step[0];
             return;
         }
         if(used.size() == wordList.size()) {
