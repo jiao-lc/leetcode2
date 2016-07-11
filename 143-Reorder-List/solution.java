@@ -14,24 +14,20 @@ public class Solution {
             slow = slow.next;
             fast = fast.next.next;
         }
-        fast = reverseList(slow.next);
+        fast = slow.next;
         slow.next = null;
-        slow = head;
-        while(slow != null && fast != null) {
-            ListNode tmps = slow.next;
-            slow.next = fast;
-            ListNode tmpf = fast.next;
-            fast.next = tmps;
-            slow = tmps;
-            fast = tmpf;
+        Stack<ListNode> stack = new Stack<>();
+        while(fast != null) {
+            stack.push(fast);
+            fast = fast.next;
         }
-    }
-    public ListNode reverseList(ListNode head) {
-        if(head == null || head.next == null)   return head;
-        ListNode tmp = head.next;
-        head.next = null;
-        ListNode newHead = reverseList(tmp);
-        tmp.next = head;
-        return newHead;
+        slow = head;
+        while(!stack.empty()) {
+            ListNode node = stack.pop();
+            ListNode tmp = slow.next;
+            slow.next = node;
+            node.next = tmp;
+            slow = tmp;
+        }
     }
 }
