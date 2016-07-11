@@ -3,7 +3,7 @@ public class Solution {
         Queue<String> myQueue = new LinkedList<String>();
         myQueue.offer(beginWord);
         int level = 1;
-        
+        HashSet<String> used = new HashSet<>(wordList);
         while(!myQueue.isEmpty()) {
             int qSize = myQueue.size();
             for(int i = 0; i < qSize; i++) {
@@ -12,9 +12,10 @@ public class Solution {
                 for(String word : wordList) {
                     if(oneDiff(word, tmp)) {
                         myQueue.offer(word);
-                        wordList.remove(word);
+                        used.remove(word);
                     }
                 }
+                wordList = used;
             }
             level++;
         }
