@@ -1,28 +1,28 @@
 public class Solution {
     public int ladderLength(String beginWord, String endWord, Set<String> wordList) {
-        int[] step = new int[1];
         Set<String> used = new HashSet<String>();
-        int ans = helper(beginWord, endWord, wordList, used, 0);
-        return ans;
-    }
-    public int helper(String cur, String end, Set<String> wordList, Set<String> used, int step) {
-        if(cur.equals(end)) {
-            return step;
-        }
-        if(used.size() == wordList.size()) {
-            return 0;
-        }
-        for(String word : wordList) {
-            if(oneDiff(word, cur)) {
-                used.add(cur);
-                step = helper(word, end, wordList, used, step + 1);
-                if(step != 0)   return step;
-                used.remove(cur);
+        Queue<String> myQueue = new LinkedList<String>();
+        myQueue.offer(beginWord);
+        int level = 1;
+        
+        while(!myQueue.isEmpty()) {
+            int qSize = myQueue.size();
+            for(int i = 0; i < qSize; i++) {
+                String tmp = myQueue.poll();
+                if(tmp.equals(endWord))    return level;
+                for(String word : wordList) {
+                    if(!used.contains(word)) {
+                        if(oneDiff(word, tmp)) {
+                            myQueue.offer(word);
+                            used.add(word);
+                        }
+                    }
+                }
             }
+            level++;
         }
         return 0;
     }
-    
     public boolean oneDiff(String w1, String w2) {
         if(w1.length() != w2.length())  return false;
         char[] c1 = w1.toCharArray();
