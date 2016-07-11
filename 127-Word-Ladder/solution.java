@@ -3,26 +3,24 @@ public class Solution {
     public int ladderLength(String beginWord, String endWord, Set<String> wordList) {
         int[] step = new int[1];
         Set<String> used = new HashSet<String>();
-        helper(beginWord, endWord, wordList, used, step);
-        return d;
+        int ans = helper(beginWord, endWord, wordList, used, 0);
+        return ans;
     }
-    public void helper(String cur, String end, Set<String> wordList, Set<String> used, int[] step) {
+    public int helper(String cur, String end, Set<String> wordList, Set<String> used, int step) {
         if(cur.equals(end)) {
-            d = step[0];
-            return;
+            return step;
         }
         if(used.size() == wordList.size()) {
-            return;
+            return 0;
         }
         for(String word : wordList) {
             if(oneDiff(word, cur)) {
                 used.add(cur);
-                step[0]++;
-                helper(word, end, wordList, used, step);
-                step[0]--;
+                step = helper(word, end, wordList, used, step + 1);
                 used.remove(cur);
             }
         }
+        return step;
     }
     
     public boolean oneDiff(String w1, String w2) {
