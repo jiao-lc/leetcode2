@@ -9,11 +9,14 @@ public class Solution {
             public int compare(String str1, String str2) {
                 String t1 = str1 + str2;
                 String t2 = str2 + str1;
-                return Integer.parseInt(t2) - Integer.parseInt(t1);
+                return t2.compareTo(t1);
             }
         });
         StringBuilder sb = new StringBuilder();
-        for(String str : dig) sb.append(str);
+        if(dig[0].equals("0")) return "0";
+        for(String str : dig) {
+            sb.append(str);
+        }
         return sb.toString();
     }
 }
