@@ -9,19 +9,16 @@
  */
 public class Solution {
     public List<Integer> rightSideView(TreeNode root) {
-        List<Integer> res = new ArrayList<Integer>();
-        if(root == null) return res;
-        Queue<TreeNode> queue = new LinkedList<TreeNode>();
-        queue.offer(root);
-        while(!queue.isEmpty()) {
-            int q = queue.size();
-            for(int i = 0; i < q; i++) {
-                root = queue.poll();
-                if(root.left != null) queue.offer(root.left);
-                if(root.right != null) queue.offer(root.right);
-            }
-            res.add(root.val);
-        }
-        return res;
+        List<Integer> result = new ArrayList<>();
+        addRightSide(root,0,result);
+        return result;
+    }
+    
+    private void addRightSide(TreeNode root,int level, List<Integer> result){
+        if(root == null) return ;
+        if(result.size() == level) result.add(root.val); // only add if level is not present.
+        addRightSide(root.right,level + 1, result);
+        addRightSide(root.left,level + 1,result);
+
     }
 }
