@@ -9,8 +9,19 @@
  */
 public class Solution {
     public int countNodes(TreeNode root) {
-        int level = 0;
-        if(root == null) return level;
-        return countNodes(root.left) + countNodes(root.right) + 1;
+        if(root == null) return 0;
+        int left = 0, right = 0;
+        TreeNode node = root;
+        while(node != null) {
+            node = node.left;
+            left++;
+        }
+        node = root;
+        while(node != null) {
+            node = node.right;
+            right++;
+        }
+        if(left == right && left != 0) return (1 << left) - 1;
+        return 1 + countNodes(root.left) + countNodes(root.right);
     }
 }
