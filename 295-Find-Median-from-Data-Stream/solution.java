@@ -24,8 +24,9 @@ public class MedianFinder {
             res = (double)arr.get(mid);
         }
         else {
-            res += (double)arr.get(mid++);
+            res += (double)arr.get(mid--);
             res += (double)arr.get(mid);
+            res /= 2;
         }
         return res;
     }
