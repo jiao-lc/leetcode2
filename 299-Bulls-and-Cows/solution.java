@@ -1,28 +1,20 @@
 public class Solution {
+    //one pass
     public String getHint(String secret, String guess) {
-        char[] target = secret.toCharArray();
-        char[] exp = guess.toCharArray();
-        HashMap<Character, Integer> map = new HashMap<Character, Integer>();
-        for(char c : target) {
-            if(!map.containsKey(c)) {
-                map.put(c, 0);
-            }
-            map.put(c, map.get(c) + 1);
+    int bulls = 0;
+    int cows = 0;
+    int[] numbers = new int[10];
+    for (int i = 0; i<secret.length(); i++) {
+        int s = Character.getNumericValue(secret.charAt(i));
+        int g = Character.getNumericValue(guess.charAt(i));
+        if (s == g) bulls++;
+        else {
+            if (numbers[s] < 0) cows++;
+            if (numbers[g] > 0) cows++;
+            numbers[s] ++;
+            numbers[g] --;
         }
-        int a = 0, b = 0;
-        for(int i = 0; i < exp.length; i++) {
-            char c = exp[i];
-            if(exp[i] == target[i]) {
-                a++;
-                map.put(c, map.get(c) - 1);
-            }
-            else if(map.containsKey(exp[i])) {
-                map.put(c, map.get(c) - 1);
-                b++;
-            }
-            if(map.containsKey(exp[i]) && map.get(exp[i]) == 0)
-                map.remove(exp[i]);
-        }
-        return String.valueOf(a) + "A" + String.valueOf(b) + "B";
+    }
+    return bulls + "A" + cows + "B";
     }
 }
