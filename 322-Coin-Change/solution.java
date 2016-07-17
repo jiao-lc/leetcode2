@@ -4,7 +4,6 @@ public class Solution {
         int[] nums = new int[amount + 1];
         Arrays.fill(nums, amount + 1);
         nums[0] = 0;
-        Arrays.sort(coins);
         for(int i = 1; i < amount + 1; i++) {
             for(int j = 0; j < coins.length; j++) {
                 int k = 1;
