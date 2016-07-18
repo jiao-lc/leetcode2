@@ -1,32 +1,20 @@
 public class Solution {
     public List<String> findItinerary(String[][] tickets) {
-        List<String> res = new ArrayList<String>();
-        if(tickets == null || tickets.length == 0) return res;
-        HashMap<String, List<String>> map = new HashMap<>();
-        for(String[] ticket : tickets) {
-            if(!map.containsKey(ticket[0])) {
-                map.put(ticket[0], new ArrayList<String>());
+            LinkedList<String> result = new LinkedList<>();
+            HashMap<String,PriorityQueue<String>> graph = new HashMap<>();
+            for(String[] edge : tickets){
+                if(!graph.containsKey(edge[0]))
+                    graph.put(edge[0],new PriorityQueue<>());
+                graph.get(edge[0]).offer(edge[1]);
             }
-            List<String> tmp = map.get(ticket[0]);
-            tmp.add(ticket[1]);
-            map.put(ticket[0], tmp);
+            DFS("JFK",graph,result); // we need to do DFS/topological sort only from "JFK"
+            return result;
         }
-        for(String key : map.keySet()) {
-            List<String> tmp = map.get(key);
-            Collections.sort(tmp);
-            map.put(key, tmp);
+        /*DFS doing topological sort*/
+        private void DFS(String node,HashMap<String,PriorityQueue<String>> graph,LinkedList<String> result ){
+            PriorityQueue<String> nodes = graph.get(node);
+            while(nodes!= null && !nodes.isEmpty())
+                DFS(nodes.poll(),graph,result);
+            result.addFirst(node); // this is the key, instead of reversing add to the head of linkelist.
         }
-        String start = "JFK", end = "JFK";
-        res.add(start);
-        while(end != null) {
-            List<String> tmp = map.get(start);
-            if(tmp == null) break;
-            end = tmp.get(0);
-            tmp.remove(0);
-            map.put(start, tmp);
-            res.add(end);
-            start = end;
-        }
-        return res;
-    }
 }
