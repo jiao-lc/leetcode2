@@ -1,16 +1,16 @@
 public class Solution {
     public boolean isValidSerialization(String preorder) {
-        String[] vals = preorder.split(",");
-        int i = 0;
-        Stack<String> st = new Stack<String>();
-        st.push("0");
-        for( ; i < vals.length; i++) {
-            if(st.empty()) break;
-            if(!vals[i].equals("#")) st.push(vals[i]);
-            else {
-                st.pop();
-            }
+        String[] strs = preorder.split(",");
+        int degree = -1;         // root has no indegree, for compensate init with -1
+        for (String str: strs) {
+            degree++;             // all nodes have 1 indegree (root compensated)
+            if (degree > 0) {     // total degree should never exceeds 0
+                return false;
+            }      
+            if (!str.equals("#")) {// only non-leaf node has 2 outdegree
+                degree -= 2;
+            }  
         }
-        return st.empty() && i == vals.length;
+        return degree == 0;
     }
 }
