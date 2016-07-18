@@ -5,9 +5,9 @@ public class Solution {
         Stack<String> st = new Stack<String>();
         st.push("0");
         for( ; i < vals.length; i++) {
+            if(st.empty()) break;
             if(!vals[i].equals("#")) st.push(vals[i]);
             else {
-                if(st.peek() == null) break;
                 st.pop();
             }
         }
