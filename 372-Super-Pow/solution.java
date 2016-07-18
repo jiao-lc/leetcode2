@@ -1,27 +1,33 @@
 public class Solution {
-    private static final int NUM = 1337;
-    public int superPow(int a, int[] b) {
-        int ans = 1;
-        //not expecting to be a part of input
-        if(b==null||b.length==0)
-            return 0;
-        a = a % NUM;
-        int len = b.length;
-        for (int i = 0; i < len; i++) {
-            ans = ((pow(ans,10)*pow(a,b[i]))%NUM);
+    int DIV = 1337;
+    List<Integer> findLoop(int a){
+        List<Integer> index = new ArrayList<>();
+        boolean[] set = new boolean[DIV];
+        int rem = a % DIV;
+        while ( ! set[rem] ) {
+            set[rem]=true;
+            index.add(rem);
+            rem = (rem*a) % DIV;
         }
-        return ans;
+        return index;
+    }
+    
+    int modBy(int[] b, int m){
+        int rem = 0;
+        for (int i=0; i < b.length; i++) {
+            rem = (rem*10+b[i]) % m;
+        }
+        return rem;
     }
 
-    private int pow(int a, int b){
-        if(b==1)
-            return a;
-        if(b==0)
-            return 1;
-        int x = pow(a,b/2);
-        x = (x*x)%NUM;
-        if((b&1)==1)
-            x = (x*a)%NUM;
-        return x;
+    public int superPow(int a, int[] b) {
+        if (a==0 || a==DIV || b==null || b.length == 0) return 0;
+        if (a==1) return 1;
+        a = a % DIV;
+        List<Integer> index = findLoop(a);
+        int loopsize = index.size();
+        int rem = modBy(b, loopsize);
+        rem = rem==0? loopsize: rem;
+        return index.get(rem-1);
     }
 }
