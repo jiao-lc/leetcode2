@@ -1,30 +1,28 @@
 public class Solution {
     public List<int[]> kSmallestPairs(int[] nums1, int[] nums2, int k) {
-        PriorityQueue<int[]> heap = new PriorityQueue<int[]>(k,new Comparator<int[]>(){
-           public int compare(int[] a,int[] b){
-                return -a[0]-a[1]+b[0]+b[1];
-           } 
-        });
-        List<int[]> res = new ArrayList<>();
-        for(int i =0;i<k&&i<nums1.length;i++){
-            for(int j=0;j<nums2.length;j++){
-                int[] cur = new int[2];
-                cur[0] = nums1[i];
-                cur[1] = nums2[j];
-                if(heap.size()<k)
-                    heap.offer(cur);
-                else{
-                    int[] top = heap.peek();
-                    if(top[0]+top[1]>cur[0]+cur[1]){
-                        heap.poll();
-                        heap.offer(cur);
-                    }
+        List<int[]> lst = new ArrayList<int[]>();
+        if (nums1.length == 0 || nums2.length == 0) return lst;
+        int[] arr = new int[nums1.length];
+        int start = 0;
+        int max_length = nums2.length;
+        int index = 0;
+        int tempt = 0;
+        while (k > 0 && start < arr.length) {
+            int min = nums1[start] + nums2[arr[start]];
+            index = start;
+            for (int i = start + 1; i < arr.length; i ++) {
+                tempt = nums1[i] + nums2[arr[i]];
+                if (tempt < min) {
+                    min = tempt;
+                    index = i;
                 }
+                if (arr[i] == 0) break;
             }
+            int[] result = {nums1[index], nums2[arr[index]]};
+            lst.add(result);
+            if (++arr[index] >= max_length) start++;
+            k--;
         }
-        for(int[] a: heap){
-            res.add(a);
-        }
-        return res;
+        return lst;
     }
 }
