@@ -1,12 +1,12 @@
 public class Solution {
     public int[] maxNumber(int[] nums1, int[] nums2, int k) {
-        int len1 = nums1.length;
-        int len2 = nums2.length;
+        int n = nums1.length;
+        int m = nums2.length;
         int[] ans = new int[k];
-        for(int i = Math.min(0, k - len1); i <= k && i <= len2; i++) {
-            int[] candidate = merge(maxArray(nums1, i), maxArray(nums2, k - i), k);
-            if (greater(candidate, 0, ans, 0)) ans = candidate;
-        }
+        for (int i = Math.max(0, k - m); i <= k && i <= n; ++i) {
+        int[] candidate = merge(maxArray(nums1, i), maxArray(nums2, k - i), k);
+        if (greater(candidate, 0, ans, 0)) ans = candidate;
+    }
         return ans;
     }
 private int[] merge(int[] nums1, int[] nums2, int k) {
