@@ -1,34 +1,59 @@
 public class Solution {
-    public boolean isRectangleCover(int[][] rectangles) {
-        HashMap<String, Integer> cor2type = new HashMap<>();
-        int lx = Integer.MAX_VALUE, ly = lx, rx = Integer.MIN_VALUE, ry = rx, sum = 0;
-        for(int[] rec : rectangles) {
-            lx = Math.min(lx, rec[0]);
-            ly = Math.min(ly, rec[1]);
-            rx = Math.max(rx, rec[2]);
-            ry = Math.max(ry, rec[3]);
-            sum += (rec[3] - rec[1]) * (rec[2] - rec[0]);
-            if(overlap(cor2type, rec[0] + "," + rec[1], 1)) return false;
-            if(overlap(cor2type, rec[2] + "," + rec[1], 2)) return false;
-            if(overlap(cor2type, rec[2] + "," + rec[3], 4)) return false;
-            if(overlap(cor2type, rec[0] + "," + rec[3], 8)) return false;
-        }
-        int cnt = 0;
-        for(String str : cor2type.keySet()) {
-            int val = cor2type.get(str);
-            if(val == 1 || val == 2 || val == 4 || val == 8) cnt++;
-        }
-        return cnt == 4 && sum == (ry - ly) * (rx - lx);
-    }
-    public boolean overlap(HashMap<String, Integer> map, String key, int type) {
-        Integer val = map.get(key);
-        if(val == null) {
-            map.put(key, type);
-        } else if((val & type) != 0) {
-            return true;
-        } else {
-            map.put(key, val | type);
-        }
-        return false;
-    }
+    public class Event implements Comparable<Event> {
+	int time;
+	int[] rect;
+
+	public Event(int time, int[] rect) {
+		this.time = time;
+		this.rect = rect;
+	}
+	
+	public int compareTo(Event that) {
+		if (this.time != that.time) return this.time - that.time;
+		else return this.rect[0] - that.rect[0];
+	}
+}
+
+public boolean isRectangleCover(int[][] rectangles) {
+	PriorityQueue<Event> pq = new PriorityQueue<Event> ();
+        // border of y-intervals
+	int[] border= {Integer.MAX_VALUE, Integer.MIN_VALUE};
+	for (int[] rect : rectangles) {
+		Event e1 = new Event(rect[0], rect);
+		Event e2 = new Event(rect[2], rect);
+		pq.add(e1);
+		pq.add(e2);
+		if (rect[1] < border[0]) border[0] = rect[1];
+		if (rect[3] > border[1]) border[1] = rect[3];
+	}
+	TreeSet<int[]> set = new TreeSet<int[]> (new Comparator<int[]> () {
+		@Override
+                // if two y-intervals intersects, return 0
+		public int compare (int[] rect1, int[] rect2) {
+			if (rect1[3] <= rect2[1]) return -1;
+			else if (rect2[3] <= rect1[1]) return 1;
+			else return 0;
+		}
+	});
+	int yRange = 0;
+	while (!pq.isEmpty()) {
+		int time = pq.peek().time;
+		while (!pq.isEmpty() && pq.peek().time == time) {
+			Event e = pq.poll();
+			int[] rect = e.rect;
+			if (time == rect[2]) {
+				set.remove(rect);
+				yRange -= rect[3] - rect[1];
+			} else {
+				if (!set.add(rect)) return false;
+				yRange += rect[3] - rect[1];
+			}
+		}
+        // check intervals' range
+		if (!pq.isEmpty() && yRange != border[1] - border[0]) {
+                        return false;
+		}
+	}
+	return true;
+}
 }
